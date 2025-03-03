@@ -1,0 +1,3 @@
+chainlink_ea_manager/ea_venv/
+chainlink_ea_manager.egg-info/
+**/__pycache__/

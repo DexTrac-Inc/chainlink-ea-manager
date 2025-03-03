@@ -1,61 +1,91 @@
-# Chainlink-EA-Manager
-Collection of scripts for deploying and managing Chainlink External Adapters
+# Chainlink External Adapter Manager
 
----
+Python-based management tool for deploying and managing Chainlink External Adapters using Docker.
 
-#### This has been tested on Debian 10, 11, & 12.
+## Features
 
-(use at your own risk, consider this as 100% untested)
+- Deploy and manage multiple Chainlink External Adapters
+- Setup Docker environment automatically
+- Manage Redis cache container
+- Configure adapters with proper API keys and subscription tiers
+- Test adapters with simple commands
+- Easy upgrade of adapters to newer versions
 
----
-## General Directions
-* Update the ```api_keys``` file with the keys for each of your external adapters.
-* Update the ```misc_vars``` file with the environment variables that you need for your ExternalAdapters
-* Modify the file(s) for the external adapter(s) you want deployed.
-
----
-## Utilization
-### Initialize a New Docker Environment for Chainlink External Adapters
-* This will:
-  * Install Docker-CE if it is not already installed.
-  * Create a Docker Network for your external adapters
-  * Deploy a Redis container for your external adapters' caching
+## Installation
 
 ```bash
-sudo ./eaManager.sh -i
+# Clone the repository
+git clone https://github.com/DexTrac-Inc/chainlink-ea-manager.git
+cd chainlink-ea-manager
+
+# Create a virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install the package
+pip install -e .
 ```
 
+## Prerequisites
 
---
-### Deploy New External Adapter With Specific Version
-* This will:
-  * Deploy a new external adapter of the selected release.
-  
+- Python 3.7+
+- Docker (will be installed automatically if not present)
+- API keys for the External Adapters you want to use
+
+## Configuration
+
+Before using the manager, update these configuration files:
+
+- `api_keys` - Add your API keys and subscription tiers for adapters
+- `misc_vars` - Configure RPC URLs and blockchain settings
+
+## Usage
+
+### Initialize Environment
+
+Set up Docker network and Redis container:
+
 ```bash
-./eaManager.sh -d coingecko
+ea-manager -i
 ```
 
-
---
-### Upgrade an Existing External Adapter
-* This will:
-  * Stop the current container.
-  * Remove the container.
-  * Deploy a new container based on the selected image version.
+### List Supported Adapters
 
 ```bash
-./eaManager.sh -u coingecko
+ea-manager -l
 ```
 
-
---
-### List all Supported External Adapter
-* This will:
-  * List all supported external adapter names
+### Deploy New Adapter
 
 ```bash
-./eaManager.sh -l
+ea-manager -d coingecko
 ```
 
+### Upgrade Existing Adapter
 
---
+```bash
+ea-manager -u coingecko
+```
+
+### Test Adapter
+
+```bash
+ea-manager -t coingecko-redis LINK USD
+```
+
+### Show Version
+
+```bash
+ea-manager -v
+```
+
+## Advanced Features
+
+- Operation logging for audit purposes
+- Structured configuration management
+- Docker environment management
+- Customizable adapter configuration
+
+## License
+
+MIT
